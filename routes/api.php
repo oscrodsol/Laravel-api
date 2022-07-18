@@ -14,6 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/',function (){
+    return 'Bienvenido a mi app';
+});
+
+Route::get('/users',function (){
+    return 'get';
+});
+
+Route::post('/users',function (){
+    return ['post'];
+});
+
+Route::put('/users',function (){
+    return ['put'];
+});
+
+Route::delete('/users',function (){
+    return ['delete'];
 });
