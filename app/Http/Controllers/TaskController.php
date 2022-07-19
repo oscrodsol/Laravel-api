@@ -4,17 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
     public function getAllTasks()
     {
         try {
-
-            //Ejemplo con query builder
-
             $tasks = Task::query()->get()->toArray();
-
 
             return response()->json([
                 'success' => true,
@@ -46,6 +43,22 @@ class TaskController extends Controller
 
     public function getTaskById($id)
     {
+
+        try {
+            $tasks = Task::query()->findOrFail($id)->get()->toArray();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Tasks retrieved successfully',
+                'data' => $tasks
+            ]);
+
+        } catch (\Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving ' . $exception->getMessage()
+            ]);
+        }
         return ['Get task with the id ' . $id];
     }
 }
