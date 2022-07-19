@@ -14,5 +14,7 @@ class Task extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = ['title','status','user_id'];
-    
+
+    protected $hidden = ['created_at','updated_at',];
+
 }
