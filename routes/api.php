@@ -21,6 +21,8 @@ Route::get('/', function () {
     return 'Bienvenido a mi app';
 });
 
+//Rutas url a users
+
 Route::get('/users', [UserController::class, 'getAllUsers']);
 
 Route::post('/users', [UserController::class, 'createUser']);
@@ -31,6 +33,7 @@ Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
 
 Route::get('/users/{id}', [UserController::class, 'getUserById']);
 
+//Rutas url a task
 
 Route::get('/tasks', [TaskController::class, 'getAllTasks']);
 
