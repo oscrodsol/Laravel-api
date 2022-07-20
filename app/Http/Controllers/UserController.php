@@ -11,14 +11,12 @@ class UserController extends Controller
     public function getAllUsers()
     {
         try {
-
+            //Ejemplo con query builder
             /*  $users = DB::table('users')
                 ->select('id', 'name', 'email')
                 ->get()
                 ->toArray();
             */
-
-            //Ejemplo con query builder
 
             $users = User::query()->select('name')->get()->toArray();
 

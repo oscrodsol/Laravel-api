@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -17,12 +18,14 @@ class TaskController extends Controller
                 'success' => true,
                 'message' => 'Tasks retrieved successfully',
                 'data' => $tasks
-            ]);
+            ],200);
         } catch (\Exception $exception) {
+            Log::error('Getting tasks '.$exception->getMessage());
+
             return response()->json([
                 'success' => false,
-                'message' => 'Error retrieving ' . $exception->getMessage()
-            ]);
+                'message' => 'Error retrieving tasks'
+            ],500);
         }
     }
 
