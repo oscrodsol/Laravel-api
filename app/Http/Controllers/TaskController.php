@@ -105,7 +105,30 @@ class TaskController extends Controller
 
     public function deleteTask($id)
     {
-        return ['Delete task with the id ' . $id];
+        try {
+            Log::info('Delete task with the id ' . $id);
+
+            $task = Task::find($id);
+
+            if (!$task) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "The task doesn't exist"
+                ], 200);
+            }
+
+            $task->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Task ' . $id . ' deleted successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting tasks'
+            ], 500);
+        }
     }
 
     public function getTaskById($id)
