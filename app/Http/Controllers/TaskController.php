@@ -6,6 +6,7 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
@@ -65,34 +66,32 @@ class TaskController extends Controller
 
             $task = Task::find($id);
 
-            if (!$task) {
+            $validator = Validator::make($request->all(), [
+                'title' => ['required', 'string'],
+                'user_id' => ['required']
+            ]);
+
+            if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'message' => "Task doesn't exist"
-                ], 404);
+                    'message' => $validator->errors()
+                ]);
             }
 
             $title = $request->input('title');
             $status = $request->input('status');
             $userId = $request->input('user_id');
 
-            if (isset($title)) {
-                $task->title = $title;
-            }
 
-            if (isset($status)) {
-                $task->status = $status;
-            }
-            
-            if (isset($userId)) {
-                $task->user_id = $userId;
-            }
+            $task->title = $title;
+            $task->status = $status;
+            $task->user_id = $userId;
 
             $task->save();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Task '.$id.' updated successfully'
+                'message' => 'Task ' . $id . ' updated successfully'
             ], 200);
         } catch (\Exception $exception) {
             Log::error('Updating task ' . $exception->getMessage());
