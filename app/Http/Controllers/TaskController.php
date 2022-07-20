@@ -18,20 +18,43 @@ class TaskController extends Controller
                 'success' => true,
                 'message' => 'Tasks retrieved successfully',
                 'data' => $tasks
-            ],200);
+            ], 200);
         } catch (\Exception $exception) {
-            Log::error('Getting tasks '.$exception->getMessage());
+            Log::error('Getting tasks ' . $exception->getMessage());
 
             return response()->json([
                 'success' => false,
                 'message' => 'Error retrieving tasks'
-            ],500);
+            ], 500);
         }
     }
 
-    public function createTask()
+    public function createTask(Request $request)
     {
-        return ['Create task'];
+        try {
+            Log::info("Creating task");
+
+            $title = $request->input('title');
+            $userId = $request->input('user_id');
+
+            $task = new Task();
+            $task->title = $title;
+            $task->user_id = $userId;
+
+            $task->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Task created successfully'
+            ], 200);
+        } catch (\Exception $exception) {
+            Log::error('Creating task ' . $exception->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving tasks'
+            ], 500);
+        }
     }
 
     public function modifyTask($id)
@@ -55,7 +78,6 @@ class TaskController extends Controller
                 'message' => 'Tasks retrieved successfully',
                 'data' => $tasks
             ]);
-
         } catch (\Exception $exception) {
             return response()->json([
                 'success' => false,

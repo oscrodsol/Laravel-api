@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -34,9 +34,34 @@ class UserController extends Controller
         }
     }
 
-    public function createUser()
+    public function createUser(Request $request)
     {
-        return ['Create user'];
+        try {
+            Log::info("Creating user");
+
+            $name = $request->input('name');
+            $email = $request->input('email');
+            $password = $request->input('password');
+
+            $user = new User();
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = $password;
+
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User created successfully'
+            ], 200);
+        } catch (\Exception $exception) {
+            Log::error('Creating user ' . $exception->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving user'
+            ], 500);
+        }
     }
 
     public function modifyUser($id)
